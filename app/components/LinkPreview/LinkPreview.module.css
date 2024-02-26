@@ -1,0 +1,32 @@
+.linkPreview {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 5px 2px #ccc;
+  border-radius: 3rem;
+  overflow: hidden;
+  cursor: pointer;
+  max-width: 400px;
+  transition: .2s box-shadow ease-out;
+}
+
+.linkPreview:hover {
+  box-shadow: 0 0 10px 3px #aaa;
+}
+
+.linkPreview figure {
+  position: relative;
+  aspect-ratio: 2/1;
+}
+
+.linkPreview img {
+  object-fit: cover;
+}
+
+.linkMeta {
+  background-color: white;
+  padding: 1.5rem 2.5rem 2rem;
+}
+
+.linkMeta h4 { 
+  margin: 0;
+}
