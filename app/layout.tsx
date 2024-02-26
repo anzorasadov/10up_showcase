@@ -20,7 +20,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <Image src="/10up.svg" alt="10up Logo" width={100} height={100} priority />
               <div>
                 Technical Submission <br />
-                <span className="hint">by Anzor Asadov</span>
+                <span className="author">by Anzor Asadov</span>
               </div>
             </div>
             <Navigation />

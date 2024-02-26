@@ -26,7 +26,7 @@ header .container {
   width: auto;
 }
 
-.hint {
+.author {
   display: block;
   color: var(--color-sage-300);
   font-weight: 300;

@@ -1,0 +1,6 @@
+.text-hint {
+  display: inline;
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: var(--color-black-50);
+}
