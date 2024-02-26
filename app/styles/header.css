@@ -1,0 +1,42 @@
+header {
+  padding: 1rem;
+  box-shadow: 2px 0 6px #ccc;
+}
+
+header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 6rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 100%;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.logo img {
+  max-height: 100%;
+  object-fit: contain;
+  overflow: hidden;
+  width: auto;
+}
+
+.hint {
+  display: block;
+  color: var(--color-sage-300);
+  font-weight: 300;
+}
+
+@media (min-width: 640px) { 
+  header {
+    padding: 1.5rem;
+  }
+  .logo {
+    gap: 2rem;
+  }
+}
