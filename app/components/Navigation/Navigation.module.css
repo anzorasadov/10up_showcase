@@ -1,0 +1,11 @@
+.mainNav ul {
+  display: flex;
+  align-items: stretch;
+  gap: 2rem;
+  padding: 0;
+}
+
+.mainNav li {
+  list-style: none;
+  padding: 0;
+}

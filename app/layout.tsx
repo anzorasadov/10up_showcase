@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
 import "./styles/globals.css";
 import Image from "next/image";
-import Link from "next/link";
+import Navigation from "./components/Navigation/Navigation";
 
 const workSans = Work_Sans({ subsets: ["latin"] });
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={workSans.className}>
+      <body className={workSans.className} suppressHydrationWarning={true}>
         <header>
           <div className="container">
             <div className="logo">
@@ -23,16 +23,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <span className="hint">by Anzor Asadov</span>
               </div>
             </div>
-            <nav>
-              <ul>
-                <li>
-                  <Link href="/">Home</Link>
-                </li>
-                <li>
-                  <Link href="/ui-architecture">UI Architecture</Link>
-                </li>
-              </ul>
-            </nav>
+            <Navigation />
           </div>
         </header>
         {children}
