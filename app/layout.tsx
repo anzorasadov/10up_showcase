@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
 import "./styles/globals.css";
 import Image from "next/image";
+import Link from "next/link";
 
 const workSans = Work_Sans({ subsets: ["latin"] });
 
@@ -22,6 +23,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <span className="hint">by Anzor Asadov</span>
               </div>
             </div>
+            <nav>
+              <ul>
+                <li>
+                  <Link href="/">Home</Link>
+                </li>
+                <li>
+                  <Link href="/ui-architecture">UI Architecture</Link>
+                </li>
+              </ul>
+            </nav>
           </div>
         </header>
         {children}
