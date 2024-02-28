@@ -8,6 +8,7 @@ import { fetchPreviewforUrl } from "@/app/actions";
 type LinkPreviewProps = {
   url: string;
   target?: "new" | "_blank";
+  contain?: boolean;
 };
 
 type PreviewData = {
@@ -16,7 +17,7 @@ type PreviewData = {
   image?: string;
 };
 
-function LinkPreview({ url, target }: LinkPreviewProps) {
+function LinkPreview({ url, target, contain }: LinkPreviewProps) {
   const [previewData, setPreviewData] = useState<PreviewData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -47,10 +48,16 @@ function LinkPreview({ url, target }: LinkPreviewProps) {
   };
 
   return (
-    <article className={styles.linkPreview} onClick={handleClick}>
+    <div className={styles.linkPreview} onClick={handleClick}>
       <figure>
         {previewData?.image && (
-          <Image loader={() => previewData.image!} fill src={previewData.image} alt={`${previewData.title} preview`} />
+          <Image
+            loader={() => previewData.image!}
+            fill
+            src={previewData.image}
+            alt={`${previewData.title} preview`}
+            style={{ objectFit: contain ? "contain" : "cover" }}
+          />
         )}
         {!previewData?.image && <Image fill src="/placeholder-image.jpg" alt={`${url} preview`} />}
       </figure>
@@ -64,7 +71,7 @@ function LinkPreview({ url, target }: LinkPreviewProps) {
           {url}
         </Link>
       </div>
-    </article>
+    </div>
   );
 }
 
