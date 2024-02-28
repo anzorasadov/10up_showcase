@@ -1,4 +1,11 @@
-export default function UIArchitecture() {
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "UI Architecture",
+  description: "Collection of UI Elements and Components used on this webpage",
+};
+
+export default function Page() {
   return (
     <main className="container">
       <section>
