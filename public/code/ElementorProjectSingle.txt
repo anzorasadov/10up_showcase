@@ -1,0 +1,234 @@
+<?php
+namespace CustomWidgets\CrowdDesk;
+
+use Elementor\Widget_Base;
+use Elementor\Controls_Manager;
+
+if (!defined('ABSPATH')) exit;
+
+require_once(__DIR__ . '/crowddesk.service.php');
+
+class SingleProject extends Widget_Base {
+
+  private $api;
+  private $properties = array();
+  private $property;
+  private $settings;
+  private $opts;
+
+  public function __construct( $data = [], $args = null ) {
+		parent::__construct( $data, $args );
+    $this->api = new API();
+  }
+
+  public function get_name() { return 'cd_project'; }
+  public function get_title() { return 'Projekt'; }
+  public function get_icon() { return 'eicon-single-page'; }
+  public function get_categories() { return ['general'];}
+
+  protected function _register_controls() {
+    $this->start_controls_section('section_content', ['label' => 'Settings']);
+
+    $this->add_control('project_id', [
+        'label' => 'Projekt ID',
+        'type' => \Elementor\Controls_Manager::TEXT,
+      ]);
+
+    $this->add_control('investable', [
+      'label' => 'Investierbar',
+      'type' => \Elementor\Controls_Manager::SWITCHER,
+      'label_on' => 'Ja',
+      'label_off' => 'Nein',
+      'return_value' => true,
+      'default' => true,
+    ]);
+
+    $this->add_control('layout', [
+      'label' => 'Spalten-Layout',
+      'type' => \Elementor\Controls_Manager::SWITCHER,
+      'label_on' => 'An',
+      'label_off' => 'Aus',
+      'return_value' => true,
+      'default' => false,
+    ]);
+
+    $this->add_control('images', [
+      'label' => 'Bild/Galerie anzeigen',
+      'type' => \Elementor\Controls_Manager::SWITCHER,
+      'label_on' => 'Ja',
+      'label_off' => 'Nein',
+      'return_value' => true,
+      'default' => true,
+    ]);
+
+    $this->add_control('view_more_btn', [
+      'label' => 'Mehr erfahren Button',
+      'type' => \Elementor\Controls_Manager::SWITCHER,
+      'label_on' => 'Anzeigen',
+      'label_off' => 'Verbergen',
+      'return_value' => true,
+      'default' => true,
+    ]);
+
+    $this->add_control('german_emissions', [
+      'label' => 'Deutschland',
+      'type' => \Elementor\Controls_Manager::SWITCHER,
+      'label_on' => 'Ja',
+      'label_off' => 'Nein',
+      'return_value' => true,
+      'default' => false,
+    ]);
+
+    $this->add_control('dividend', [
+      'label' => 'Ausschüttung',
+      'type' => \Elementor\Controls_Manager::TEXT,
+      'default' => '',
+    ]);
+
+    $this->add_control(
+			'gallery',
+			[
+				'label' => esc_html__( 'Bilder', 'plugin-name' ),
+				'type' => \Elementor\Controls_Manager::GALLERY,
+				'default' => [],
+			]
+		);
+
+    $this->end_controls_section();
+  }
+  
+  protected function render() {
+    $settings = $this->get_settings_for_display();
+    $this->property = $this->api->fetch_emission_by_id($settings['project_id'])[0];
+    $id = $settings['project_id'] . rand();
+    ?>
+
+    <div class="cd-projects-container">
+      <div class="cd-properties">
+        <div class="cd-property <?=($settings['layout'] ? 'flex-col' : '')?>">
+
+          <?php if($settings['images']): ?>
+            <?php if(count($settings['gallery']) == 1): ?>
+              <div class="property-image-container">
+                <img src="<?=$this->property['image']?>" class="attachment-full size-full" loading="lazy" />
+              </div>
+            <?php elseif(count($settings['gallery']) > 1): ?>
+              <div class="property-image-container">
+                <div id="id-<?= $id; ?>" class="slider">
+                  <div class="wrapper">
+                    <div class="items">
+                      <?php foreach ( $settings['gallery'] as $image ) {
+                        echo '<img src="' . esc_attr( $image['url'] ) . '">';
+                      }?>
+                    </div>
+                    <a id="prev" class="control prev">
+                      <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14.707 5.293a1 1 0 0 1 0 1.414L9.414 12l5.293 5.293a1 1 0 0 1-1.414 1.414l-6-6a1 1 0 0 1 0-1.414l6-6a1 1 0 0 1 1.414 0z" />
+                      </svg>
+                    </a>
+                    <a id="next" class="control next">
+                      <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.293 18.6949C7.10553 18.5074 7.00021 18.2531 7.00021 17.9879C7.00021 17.7228 7.10553 17.4685 7.293 17.2809L12.586 11.9879L7.293 6.69493C7.11084 6.50632 7.01005 6.25372 7.01233 5.99152C7.01461 5.72933 7.11977 5.47852 7.30518 5.29311C7.49059 5.1077 7.7414 5.00253 8.0036 5.00025C8.2658 4.99797 8.5184 5.09877 8.707 5.28093L14.707 11.2809C14.8945 11.4685 14.9998 11.7228 14.9998 11.9879C14.9998 12.2531 14.8945 12.5074 14.707 12.6949L8.707 18.6949C8.51947 18.8824 8.26516 18.9877 8 18.9877C7.73484 18.9877 7.48053 18.8824 7.293 18.6949V18.6949Z" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <script>
+                window.addEventListener('load', function(){
+                  var slider = document.querySelector('#id-<?= $id; ?>');
+                  var sliderItems = slider.querySelector('.items');
+                  var prev = slider.querySelector('#prev');
+                  var next = slider.querySelector('#next');
+                  
+                  window.slide(slider, sliderItems, prev, next);
+                });
+              </script>
+            <?php endif; ?>
+          <?php endif; ?>
+
+          <div class="property-info-container">
+            <div>
+              <div class="text-uppercase"><?=$this->property['location'];?></div>
+              <h2><?= $this->property['address']; ?></h2>
+            </div>
+
+            <div class="infos">
+              <div class="info">
+                <div class="label">Zins. p.a.</div>
+                <h3 class="value"><?= $this->property['interest']; ?></h3>
+              </div>
+              <div class="info">
+                <div class="label">Laufzeit</div>
+                <h3 class="value"><?= $this->property['period']; ?></h3>
+              </div>
+              <div class="info">
+                <div class="label">Ziel</div>
+                <h3 class="value"><?= number_format($this->property['target_max'], 0, ",", ".") . "€"; ?></h3>
+              </div>
+            </div>
+
+            <div class="investment-info">
+              <?php if($settings['view_more_btn'] == true): ?>
+                <a href="<?= home_url( '/' ).$this->property['id'] ?>" target="new"
+                  class="elementor-button-link elementor-button elementor-size-xs elementor-animation-shrink">
+                  mehr erfahren
+                </a>
+              <?php endif; ?>
+              <?php if($settings['investable'] == true && $this->property['investable'] == true): ?>
+                <a href="<?= $this->property['investment_url'] ?>" target="new"
+                  class="elementor-button-link elementor-button elementor-size-xs elementor-animation-shrink">
+                  jetzt investieren
+                </a>
+              <?php endif; ?>
+            </div>
+            <div class="investment-progress" investable-until="<?= $this->property['investable_until']; ?>">
+              <?php if($this->property['investable_until'] > date('Y-m-d\TH:i:sp')): ?>
+                <progress-bar
+                  minsum="<?= $this->property['target_min']; ?>"
+                  maxsum="<?= $this->property['target_max']; ?>"
+                  progress="<?= $this->property['investment_percentage']; ?>"
+                  progress-min="<?= $this->property['investment_percentage_min']; ?>"
+                  progress-label="<?= $this->property['investment_percentage_label']; ?>"
+                  inv-sum="<?= number_format($this->property['investment_sum'], 0, ",", ".") . "€"; ?>"
+                  position="<?= number_format($this->property['total_percentage'], 0, ",", "."); ?>"
+                ></progress-bar>
+              <?php elseif ($this->property['investment_sum'] > $this->property['target_min']) : ?>
+                <h3 class="value" style="margin-top: -0.7em">Erfolgreich finanziert!</h3>
+              <?php endif; ?>
+              <?php if(isset($settings['dividend']) && strlen($settings['dividend'])): ?>
+                <div class="dividend">
+                  <?php $invDays = round(($this->property['investable_until'] - date('Y-m-d\TH:i:sp')) / (60 * 60 * 24)); ?>
+                  <?php if($this->property['investable_until'] > date('Y-m-d\TH:i:sp')): ?>
+                    <span>DEADLINE: Noch <?= $invDays; ?> Tage investierbar</span>
+                  <?php endif; ?>
+                  <span>AUSSCHÜTTUNG: <?=$settings['dividend'];?></span>
+                </div>
+              <?php endif; ?>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <?php
+  }
+
+  protected function content_template() {
+    ?>
+    <div class="cd-projects-container">
+      <div class="elementor-element elementor-widget elementor-widget-heading animated fadeInUp" data-element_type="widget" data-widget_type="heading.default">
+        <h3 class="subheading elementor-heading-title elementor-inline-editing">
+          {{{ settings.subheading }}}
+        </h3>
+      </div>
+      <div class="elementor-element elementor-widget elementor-widget-heading animated fadeInUp" data-element_type="widget" data-widget_type="heading.default">
+        <h2 class="heading elementor-heading-title">
+          {{{ settings.heading }}}
+        </h2>
+      </div>
+      <div class="preload-hint">Hier werden die projekte dynamisch geladen</div>
+    </div>
+    <?php
+  }
+}

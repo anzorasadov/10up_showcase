@@ -1,0 +1,227 @@
+<?php
+namespace CustomWidgets\CrowdDesk;
+
+use Elementor\Widget_Base;
+use Elementor\Controls_Manager;
+
+if (!defined('ABSPATH')) exit;
+
+require_once(__DIR__ . '/crowddesk.service.php');
+
+class Projects extends Widget_Base {
+
+  private $api;
+  private $properties = array();
+  private $settings;
+
+  public function __construct( $data = [], $args = null ) {
+		parent::__construct( $data, $args );
+    $this->api = new API();
+  }
+
+  public function get_name() { return 'cd_list_projects'; }
+  public function get_title() { return 'Projektliste'; }
+  public function get_icon() { return 'eicon-single-page'; }
+  public function get_categories() { return ['general'];}
+
+  protected function _register_controls() {
+    $this->start_controls_section('section_content', ['label' => 'Settings']);
+
+    $this->add_control('heading', [
+      'label' => 'Überschrift',
+      'type' => \Elementor\Controls_Manager::TEXT,
+      'default' => 'Aktuelle Projekte',
+    ]);
+
+    $this->add_control('subheading', [
+      'label' => 'Zwischenüberschrift',
+      'type' => \Elementor\Controls_Manager::TEXT,
+      'default' => 'Aktuelle Projekte',
+    ]);
+    $this->add_control('ids', [
+      'label' => 'Projekt IDs (Komma-separiert) <br /> <i> leer lassen und die Neuesten anzuzeigen</i>',
+      'type' => \Elementor\Controls_Manager::TEXT,
+      'label_block' => true,
+    ]);
+
+    $this->add_control('limit', [
+      'label' => 'Anzahl Projekte',
+      'type' => \Elementor\Controls_Manager::NUMBER,
+    ]);
+
+    $this->add_control('investable', [
+      'label' => 'Investierbar',
+      'type' => \Elementor\Controls_Manager::SWITCHER,
+      'label_on' => 'Ja',
+      'label_off' => 'Nein',
+      'return_value' => true,
+      'default' => true,
+    ]);
+
+    $this->add_control('layout', [
+      'label' => 'Spalten-Layout',
+      'type' => \Elementor\Controls_Manager::SWITCHER,
+      'label_on' => 'An',
+      'label_off' => 'Aus',
+      'return_value' => true,
+      'default' => false,
+    ]);
+
+    $this->add_control('image_render', [
+      'label' => 'Bild anzeigen',
+      'type' => \Elementor\Controls_Manager::SWITCHER,
+      'label_on' => 'Ja',
+      'label_off' => 'Nein',
+      'return_value' => true,
+      'default' => true,
+    ]);
+
+    $this->add_control('view_more_btn', [
+      'label' => 'Mehr erfahren Button',
+      'type' => \Elementor\Controls_Manager::SWITCHER,
+      'label_on' => 'Anzeigen',
+      'label_off' => 'Verbergen',
+      'return_value' => true,
+      'default' => true,
+    ]);
+
+    $this->add_control('german_emissions', [
+      'label' => 'Deutschland',
+      'type' => \Elementor\Controls_Manager::SWITCHER,
+      'label_on' => 'Ja',
+      'label_off' => 'Nein',
+      'return_value' => true,
+      'default' => false,
+    ]);
+
+    $this->end_controls_section();
+  }
+  
+  protected function render() {
+    $settings = $this->get_settings_for_display();
+    if ($settings['ids'] != '') {
+      $id_array = array_map('trim', explode(',', $settings['ids']));
+      foreach($id_array as $id) {
+        $prop = $this->api->fetch_emission_by_id($id);
+        array_push($this->properties, $prop[0]);
+      }
+    } else {
+      if ($settings['german_emissions'] == true) {
+        $this->properties = $this->api->fetch_emissions('de');
+      } else {
+        $this->properties = $this->api->fetch_emissions();
+      }  
+
+      if($settings['limit'] > 0) {
+        $this->properties = array_slice($this->properties, 0, $settings['limit']);
+      }
+    }
+    ?>
+
+    <div class="cd-projects-container">
+      <div class="elementor-element elementor-widget elementor-widget-heading animated fadeInUp" data-element_type="widget" data-widget_type="heading.default">
+        <h3 class="subheading elementor-heading-titl  elementor-inline-editing">
+          <?php echo $settings['subheading'] ?>
+        </h3>
+      </div>
+      <div class="heading elementor-element elementor-widget elementor-widget-heading animated fadeInUp" data-element_type="widget" data-widget_type="heading.default">
+        <h2 class="elementor-heading-title">
+          <?php echo $settings['heading'] ?>
+        </h2>
+      </div>
+
+      <div class="cd-properties <?=($settings['layout'] ? 'three-cols' : '')?>">
+      <?php foreach($this->properties as $property): ?>
+        <section class="cd-property">
+
+          <?php if($settings['image_render']): ?>
+            <div class="property-image-container">
+              <img src="<?=$property['image']?>" class="attachment-full size-full" loading="lazy">
+            </div>
+          <?php endif; ?>
+
+          <div class="property-info-container">
+            <div>
+              <div class="text-uppercase"><?=$property['location'];?></div>
+              <h2><?= $property['address']; ?></h2>
+            </div>
+
+            <div class="infos">
+              <div class="info">
+                <div class="label">Zins. p.a.</div>
+                <h3 class="value"><?= $property['interest']; ?></h3>
+              </div>
+              <div class="info">
+                <div class="label">Laufzeit</div>
+                <h3 class="value"><?= $property['period']; ?></h3>
+              </div>
+              <div class="info">
+                <div class="label">Ziel</div>
+                <h3 class="value"><?= number_format($property['target_max'], 0, ",", ".") . "€"; ?></h3>
+              </div>
+            </div>
+
+            <div class="investment-info">
+              <?php if($settings['view_more_btn'] == true): ?>
+                <a href="<?= home_url( '/' ).$property['id'] ?>" target="new"
+                  class="elementor-button-link elementor-button elementor-size-xs elementor-animation-shrink">
+                  mehr erfahren
+                </a>
+              <?php endif; ?>
+              <?php if($settings['investable'] == true && $property['investable'] == true): ?>
+                <a href="<?= $property['investment_url'] ?>" target="new"
+                  class="elementor-button-link elementor-button elementor-size-xs elementor-animation-shrink">
+                  jetzt investieren
+                </a>
+              <?php endif; ?>
+            </div>
+            <?php if($property['investable_until'] > date('Y-m-d\TH:i:sp')): ?>
+              <div class="investment-progress" investable-until="<?= $property['investable_until']; ?>">
+                <progress-bar
+                  minsum="<?= $property['target_min']; ?>"
+                  maxsum="<?= $property['target_max']; ?>"
+                  progress="<?= $property['investment_percentage']; ?>"
+                  progress-min="<?= $property['investment_percentage_min']; ?>"
+                  progress-label="<?= $property['investment_percentage_label']; ?>"
+                  inv-sum="<?= number_format($property['investment_sum'], 0, ",", ".") . "€"; ?>"
+                ></progress-bar>
+              </div>
+            <?php elseif ($property['investment_sum'] > $property['target_min']) : ?>
+              <h3 class="value" style="-0.7em">Erfolgreich finanziert!</h3>
+            <?php endif; ?>
+
+            <?php $invDays = round(($this->property['investable_until'] - date('Y-m-d\TH:i:sp')) / (60 * 60 * 24)); ?>
+            <?php if($this->property['investable_until'] > date('Y-m-d\TH:i:sp')): ?>
+              <div class="dividend">
+                <span>DEADLINE: Noch <?= $invDays; ?> Tage investierbar</span>
+              </div>
+            <?php endif; ?>
+          </div>
+
+        </section>
+      <?php endforeach; ?>
+      </div>
+
+      <!-- <div class="preload-hint">Hier werden die projekte dynamisch geladen</div> -->
+    </div>
+    <?php
+  }
+
+  protected function content_template() {
+    ?>
+    <div class="cd-projects-container">
+      <div class="elementor-element elementor-widget elementor-widget-heading animated fadeInUp" data-element_type="widget" data-widget_type="heading.default">
+        <h3 class="subheading elementor-heading-title elementor-inline-editing">
+          {{{ settings.subheading }}}
+        </h3>
+      </div>
+      <div class="elementor-element elementor-widget elementor-widget-heading animated fadeInUp" data-element_type="widget" data-widget_type="heading.default">
+        <h2 class="heading elementor-heading-title">
+          {{{ settings.heading }}}
+        </h2>
+      </div>
+      <div class="preload-hint">Hier werden die projekte dynamisch geladen</div>
+    </div>
+    <?php
+  }
+}

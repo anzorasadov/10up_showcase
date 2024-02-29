@@ -1,0 +1,99 @@
+<?php
+namespace CustomWidgets\CrowdDesk;
+
+if (!defined('ABSPATH')) exit;
+
+require_once($_SERVER['DOCUMENT_ROOT'] . '/wp-load.php');
+
+Class Adapter {
+
+  function transform_to_properties($raw, $projects, $locale = null) {
+    $properties = array();
+    $investment_url = 'https://invest.renditeboutique.at/invest/';
+
+    foreach($raw as $item) {
+      if ($locale != null && $locale != 'de' && preg_match('/^.*\_DE$/i', $item->reference)) {
+        continue;
+      } else if ($locale != null && $locale == 'de' && !preg_match('/^.*\_DE$/i', $item->reference)) {
+        continue;
+      }
+
+      $project = $projects[$item->project_id];
+      $investment_percentage = intval($project['investments_sum']) / (intval($project['target_min']) / 100);
+      $investment_percentage_min = min(intval($project['target_min']) / (intval($item->maximum_volume) / 100), $investment_percentage);
+      $total_percentage = intval($project['investments_sum']) / (intval($item->maximum_volume) / 100);
+      array_push($properties, array(
+        'id' => $item->id,
+        'reference' => $item->reference,
+        'investable' => $item->investable,
+        'location' => $project['location'],
+        'address' => $project['address'],
+        'image' => $project['image'],
+        'interest' => $project['interest'],
+        'period' => $project['period'],
+        'target_min' => $project['target_min'],
+        'target_max' => intval($item->maximum_volume),
+        'investment_url' => $investment_url . $item->id . '-' . $item->reference,
+        'investment_sum' => intval($project['investments_sum']),
+        'investment_percentage' => $investment_percentage,
+        'investment_percentage_min' => $investment_percentage_min,
+        'investment_percentage_label' => $investment_percentage,
+        'total_percentage' => $total_percentage,
+        'investable_from' => $item->investable_from,
+        'investable_until' => $item->investable_until,
+      ));
+    }
+    
+    return $properties;
+  }
+
+  function transform_projects($raw) {
+    $projects = array();
+    foreach($raw as $item) {
+      $projects[$item->id] = array(
+        'id' => $item->id,
+        'interest' => $item->feature_1_value,
+        'location' => $item->feature_2_value,
+        'period' => $item->feature_3_value,
+        'address' => $item->name,
+        'image' => $item->image,
+        'target_min' => intval($item->minimum_volume),
+        'target_max' => intval($item->maximum_volume),
+        'investments_sum' => intval($item->investments_sum),
+        'investable_from' => $item->investable_from,
+        'investable_until' => $item->investable_until,
+      );
+    }
+
+    return $projects;
+  }
+
+  //deprecated
+  function transform_investments($raw) {
+    $investments = array();
+
+
+    foreach($raw as $item) {
+      if ($item->state != 'canceled') {
+        if (array_key_exists($item->emission_id, $investments)) {
+          $investments[$item->emission_id] = intval($investments[$item->emission_id]) + intval($item->amount);
+        } else {
+          $investments[$item->emission_id] = intval($item->amount);
+        }
+      }
+    }
+
+    return $investments;
+  }
+
+  function calc_and_format_period($start, $end) {
+    $start_date = date_create($start);
+    $end_date = date_create($end);
+
+    $date_diff = date_diff($end_date, $start_date);
+
+    if ($date_diff->m == 0) { return $date_diff->format('%a Tage'); }
+    else { return $date_diff->format('%m Mon.'); }
+  }
+
+}
