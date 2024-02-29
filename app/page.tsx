@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { promises as fs } from "fs";
 import LinkPreview from "./components/LinkPreview/LinkPreview";
 import CodeBlock from "./components/CodeBlock/CodeBlock";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "10up Technical Submission",
@@ -184,7 +185,11 @@ export default async function Home() {
 
         <p>
           To allow this I had to write a custom building block for Elementor to give the user a toolbox for displaying and curating the
-          contents.
+          contents, the results of which can be viewed{" "}
+          <a href="https://renditeboutique.at/projekte/" target="new">
+            here
+          </a>
+          .
         </p>
 
         <CodeBlock className="my-1" isCollapsable title="Elementor widget for displaying projects lists from Crowddesk">
@@ -194,6 +199,22 @@ export default async function Home() {
         <CodeBlock className="my-1" isCollapsable title="Elementor widget for displaying single Project from Crowddesk">
           {elementorProjectSingle}
         </CodeBlock>
+
+        <p>This resulted in the following Elementor widgets:</p>
+        <div>
+          <Image
+            src="/screenshots/singleproject.jpg"
+            width={2000}
+            height={2000}
+            alt="Screenshot displaying a custom Elementor widget in WP-Admin"
+          />
+          <Image
+            src="/screenshots/multipleprojects.jpg"
+            width={2000}
+            height={2000}
+            alt="Screenshot displaying a custom Elementor widget in WP-Admin"
+          />
+        </div>
       </section>
     </main>
   );

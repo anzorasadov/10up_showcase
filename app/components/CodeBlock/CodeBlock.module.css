@@ -18,6 +18,7 @@
 .collapseTrigger {
   padding: 1rem;
   user-select: none;
+  cursor: pointer;
 }
 
 .colapseContainer {
