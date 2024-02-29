@@ -10,10 +10,13 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const crowddeskService = await fs.readFile(process.cwd() + "/public/code/CrowddeskService.txt", "utf8");
-  const crowddeskAdapter = await fs.readFile(process.cwd() + "/public/code/CrowddeskAdapter.txt", "utf8");
-  const elementorProjectsOverview = await fs.readFile(process.cwd() + "/public/code/ElementorProjectsOverview.txt", "utf8");
-  const elementorProjectSingle = await fs.readFile(process.cwd() + "/public/code/ElementorProjectSingle.txt", "utf8");
+  const [crowddeskService, crowddeskAdapter, elementorProjectsOverview, elementorProjectSingle] = await Promise.all([
+    fs.readFile(process.cwd() + "/public/code/CrowddeskService.txt", "utf8"),
+    fs.readFile(process.cwd() + "/public/code/CrowddeskAdapter.txt", "utf8"),
+    fs.readFile(process.cwd() + "/public/code/ElementorProjectsOverview.txt", "utf8"),
+    fs.readFile(process.cwd() + "/public/code/ElementorProjectSingle.txt", "utf8"),
+  ]);
+
   return (
     <main className="container">
       <section>
