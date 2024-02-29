@@ -5,10 +5,10 @@ import styles from "./CodeBlock.module.css";
 import "./prismtheme.css";
 
 type CodeBlockProps = {
+  children: string;
   title?: string;
   isCollapsable?: boolean;
-  children: string;
-  className: string;
+  className?: string;
 };
 
 const CodeBlock = ({ title, children, isCollapsable, className }: CodeBlockProps) => {
