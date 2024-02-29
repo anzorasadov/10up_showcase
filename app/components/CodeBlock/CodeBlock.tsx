@@ -1,6 +1,7 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Prism from "prismjs";
+import gsap from "gsap";
 import styles from "./CodeBlock.module.css";
 import "./prismtheme.css";
 
@@ -13,7 +14,16 @@ type CodeBlockProps = {
 
 const CodeBlock = ({ title, children, isCollapsable, className }: CodeBlockProps) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const collapseContaierRef = useRef(null);
   useEffect(() => Prism.highlightAll(), []);
+
+  useEffect(() => {
+    if (isCollapsed) {
+      gsap.to(collapseContaierRef.current, { height: "0", paddingBottom: 0 });
+    } else {
+      gsap.to(collapseContaierRef.current, { height: "auto", paddingBottom: "1rem" });
+    }
+  }, [isCollapsed]);
 
   const highlitedCode = (
     <pre>
@@ -29,7 +39,9 @@ const CodeBlock = ({ title, children, isCollapsable, className }: CodeBlockProps
           <span>{isCollapsed ? "+" : "-"}</span>
         </h4>
       </div>
-      <div className={`${styles.colapseContainer} ${isCollapsed ? styles.collapsed : styles.expanded}`}>{highlitedCode}</div>
+      <div className={styles.colapseContainer} ref={collapseContaierRef}>
+        {highlitedCode}
+      </div>
     </div>
   ) : (
     highlitedCode

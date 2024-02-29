@@ -4,6 +4,7 @@ import { promises as fs } from "fs";
 import LinkPreview from "./components/LinkPreview/LinkPreview";
 import CodeBlock from "./components/CodeBlock/CodeBlock";
 import Image from "next/image";
+import PageAnimations from "./components/PageAnimations";
 
 export const metadata: Metadata = {
   title: "10up Technical Submission",
@@ -20,6 +21,7 @@ export default async function Home() {
 
   return (
     <main className="container">
+      <PageAnimations />
       <section>
         <h1>10up Technical Submission</h1>
         <p>This is a collection of code examles that was requested by 10up Team to get a better understanding of my technical skills.</p>
@@ -83,7 +85,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="semantic-html">
+      <section className="my-5" id="semantic-html">
         <h2>Semantic HTML</h2>
         <p>
           This demo webpage was created with semantic HTML in mind consisting of <code className="inline">{"<header />"}</code>,{" "}
@@ -100,7 +102,7 @@ export default async function Home() {
         </p>
       </section>
 
-      <section id="css">
+      <section className="my-5" id="css">
         <h2>CSS, UI, Components Architecture</h2>
         <p>
           As it is the case with semantic HTML, this website was set up without CSS frameworks in order to demonstrate my CSS abilities,
@@ -151,7 +153,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="design">
+      <section className="my-5" id="design">
         <h2>Design</h2>
         <p>
           While Design is not my area of expertise, I do hope I could demonstrate my rudimentary design skills well enough with this demo
@@ -190,7 +192,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="javascript">
+      <section className="my-5" id="javascript">
         <h2>JavaScript</h2>
         <p>
           Here is a clickdummy that I designed and Implemented for a clients web application. They specifically asked to use Vanilla JS.
@@ -200,7 +202,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="react">
+      <section className="my-5" id="react">
         <h2>React</h2>
         <p>
           Most of my React Code has been produced as a part of proprietary software that I cannot show due to NDAs that I've signed.
@@ -215,7 +217,7 @@ export default async function Home() {
         </p>
       </section>
 
-      <section id="wordpress">
+      <section className="my-5" id="wordpress">
         <h2>WordPress / PHP</h2>
         <p>
           Usually I am requested by my clients to implement some custom functions or connect a WP-Website to an API. As demonstrated in the
@@ -267,12 +269,12 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="gutenberg">
+      <section className="my-5" id="gutenberg">
         <h2>Gutenberg</h2>
         <p>Unfortunately I do not have any examples in this section.</p>
       </section>
 
-      <section id="a11y">
+      <section className="my-5" id="a11y">
         <h2>Accessibility</h2>
         <p>This demo has been built with basic accessibility in mind.</p>
       </section>
