@@ -32,12 +32,12 @@
 
 .three-col > * {
   flex: 1 0 30%;
-  max-width: calc(33% - var(--gap)/2);
 }
 
 /* MD */
 @media (min-width: 768px) { 
   .three-col { flex-direction: row; flex-wrap: wrap; }
+  .three-col > * { max-width: calc(33% - var(--gap)/2); }
 }	
 /* LG */
 @media (min-width: 1024px) { 

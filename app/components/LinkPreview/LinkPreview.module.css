@@ -29,10 +29,3 @@
 .linkMeta h4 { 
   margin: 0;
 }
-
-.linkMeta a { 
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  max-width: 100%;
-  overflow: hidden;
-}

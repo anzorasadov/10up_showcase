@@ -255,14 +255,14 @@ export default async function Home() {
           <Image
             src="/screenshots/singleproject.jpg"
             width={2000}
-            height={2000}
+            height={725}
             alt="Screenshot displaying a custom Elementor widget in WP-Admin"
             className="my-1"
           />
           <Image
             src="/screenshots/multipleprojects.jpg"
             width={2000}
-            height={2000}
+            height={725}
             alt="Screenshot displaying a custom Elementor widget in WP-Admin"
             className="my-1"
           />

@@ -19,7 +19,6 @@ const PageAnimations = () => {
           scrollTrigger: {
             trigger: section,
             start: "top bottom-=20%",
-            markers: true,
           },
           onComplete: () => staggerCols(section),
         });
