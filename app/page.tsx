@@ -66,7 +66,7 @@ export default async function Home() {
               (WIP) Homepage - CSS, JS, React
             </li>
             <li>
-              <a href="https://www.saniadmina.com/">sania d'mina</a> - CSS, JS, WP, PHP
+              <a href="https://www.saniadmina.com/">sania d&apos;mina</a> - CSS, JS, WP, PHP
             </li>
             <li>
               <a href="https://birnleitner-immobilien.at/">Birnleitner Immobilien</a> - CSS, JS, WP, PHP
@@ -205,7 +205,7 @@ export default async function Home() {
       <section className="my-5" id="react">
         <h2>React</h2>
         <p>
-          Most of my React Code has been produced as a part of proprietary software that I cannot show due to NDAs that I've signed.
+          Most of my React Code has been produced as a part of proprietary software that I cannot show due to NDAs that I&apos;ve signed.
           However, this page was set up in Next.js, which is based on React. Furthermore, the WIP website{" "}
           <a href="https://layered-2023.vercel.app/en" target="new">
             Layered Studio
