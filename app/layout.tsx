@@ -27,6 +27,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           </div>
         </header>
         {children}
+
+        <footer>
+          <div className="container">&copy; Anzor Asadov</div>
+        </footer>
       </body>
     </html>
   );

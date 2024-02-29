@@ -22,7 +22,8 @@ export default async function Home() {
     <main className="container">
       <section>
         <h1>10up Technical Submission</h1>
-        <p>This is a collection of code expamles that was requested by 10up Team to get a better understanding of my technical skills.</p>
+        <p>This is a collection of code examles that was requested by 10up Team to get a better understanding of my technical skills.</p>
+
         <h2>Requested Code Samples</h2>
         <p>10up Team has requested the following code examples:</p>
         <ul>
@@ -51,6 +52,35 @@ export default async function Home() {
             <a href="#a11y">Accessibility (nice to have)</a>
           </li>
         </ul>
+
+        <h2>Links at a glance:</h2>
+        <div>
+          <ul>
+            <li>
+              <a href="https://github.com/anzorasadov/10up_showcase">Repo for this page</a> - CSS, JS, React
+            </li>
+            <li>
+              <a href="https://github.com/anzorasadov/layered-2023">Repo</a> and <a href="https://layered-2023.vercel.app/en">Link</a> to my
+              (WIP) Homepage - CSS, JS, React
+            </li>
+            <li>
+              <a href="https://www.saniadmina.com/">sania d'mina</a> - CSS, JS, WP, PHP
+            </li>
+            <li>
+              <a href="https://birnleitner-immobilien.at/">Birnleitner Immobilien</a> - CSS, JS, WP, PHP
+            </li>
+            <li>
+              <a href="https://github.com/anzorasadov/radailogy">Repo</a> and <a href="https://radailogy.layered-studio.com/">Link</a> to a
+              Clickdummy for a Client Application
+            </li>
+            <li>
+              <a href="https://renditeboutique.at/projekte">Rendite Boutique</a> - WP, PHP, Elementor
+            </li>
+            <li>
+              <a href="https://gulz.at/">Gulz</a> - WP, PHP, CSS
+            </li>
+          </ul>
+        </div>
       </section>
 
       <section id="semantic-html">
@@ -110,13 +140,21 @@ export default async function Home() {
               <a href="https://github.com/anzorasadov/layered-2023">Custom CSS based on Tailwind CSS (global.css and components)</a>
             </p>
           </div>
+
+          <div>
+            <LinkPreview url="https://radailogy.layered-studio.com/" target="new" contain />
+            <p className="px-1">
+              Clickdummy for a Web Application <br />
+              <a href="https://github.com/anzorasadov/radailogy">Custom CSS (ITCSS Model)</a>
+            </p>
+          </div>
         </div>
       </section>
 
       <section id="design">
         <h2>Design</h2>
         <p>
-          While Design is not my area of expertise, I do hope I could demonstrate my rudementary design skills well enough with this demo
+          While Design is not my area of expertise, I do hope I could demonstrate my rudimentary design skills well enough with this demo
         </p>
         <p>Further references:</p>
         <div className="three-col py-1">
@@ -127,29 +165,39 @@ export default async function Home() {
 
           <div>
             <LinkPreview url="https://birnleitner-immobilien.at/" target="new" />
-            <p className="px-1">Styling in collaboration with the my business Partner</p>
+            <p className="px-1">Styling in collaboration with my business Partner</p>
           </div>
 
           <div>
             <LinkPreview url="https://layered-2023.vercel.app/en" target="new" contain />
-            <p className="px-1">Styling in collaboration with the my business partner</p>
+            <p className="px-1">Styling in collaboration with my business partner</p>
           </div>
 
           <div>
             <LinkPreview url="https://castelloalba.at/" target="new" contain />
-            <p className="px-1">Styling in collaboration with the my business partner</p>
+            <p className="px-1">Styling in collaboration with my business partner</p>
           </div>
 
           <div>
             <LinkPreview url="https://gulz.at/" target="new" />
-            <p className="px-1">Styling in collaboration with the my business partner</p>
+            <p className="px-1">Styling in collaboration with my business partner</p>
+          </div>
+
+          <div>
+            <LinkPreview url="https://radailogy.layered-studio.com/" target="new" contain />
+            <p className="px-1">App Design had to be based on their current website design</p>
           </div>
         </div>
       </section>
 
       <section id="javascript">
         <h2>JavaScript</h2>
-        <p>Here is a summary of a few JS building blocks that I have setup for clients</p>
+        <p>
+          Here is a clickdummy that I designed and Implemented for a clients web application. They specifically asked to use Vanilla JS.
+        </p>
+        <div className="three-col">
+          <LinkPreview url="https://radailogy.layered-studio.com/" target="new" contain />
+        </div>
       </section>
 
       <section id="react">
@@ -163,7 +211,7 @@ export default async function Home() {
           <a href="https://github.com/anzorasadov/layered-2023" target="new">
             (repo)
           </a>{" "}
-          is also built with Next.js. Although these Demos are rudementary, I do hope that they could provide some insight.
+          is also built with Next.js. Although these Demos are rudimentary, I do hope that they could provide some insight.
         </p>
       </section>
 
@@ -172,7 +220,7 @@ export default async function Home() {
         <p>
           Usually I am requested by my clients to implement some custom functions or connect a WP-Website to an API. As demonstrated in the
           following example, I have connected a Crowdfunding API to a clients website in order to display their current Crowdfunding
-          Projects on thier website.
+          Projects on their website.
         </p>
 
         <CodeBlock className="my-1" isCollapsable title="Crowddesk Serice API">
@@ -207,14 +255,34 @@ export default async function Home() {
             width={2000}
             height={2000}
             alt="Screenshot displaying a custom Elementor widget in WP-Admin"
+            className="my-1"
           />
           <Image
             src="/screenshots/multipleprojects.jpg"
             width={2000}
             height={2000}
             alt="Screenshot displaying a custom Elementor widget in WP-Admin"
+            className="my-1"
           />
         </div>
+      </section>
+
+      <section id="gutenberg">
+        <h2>Gutenberg</h2>
+        <p>Unfortunately I do not have any examples in this section.</p>
+      </section>
+
+      <section id="a11y">
+        <h2>Accessibility</h2>
+        <p>This demo has been built with basic accessibility in mind.</p>
+      </section>
+
+      <section>
+        <h2>Summary</h2>
+        <p>
+          I hope I could demostrate part of my technical skills with this summary of code examples. I am happy to go into into details in a
+          personal interview / call.
+        </p>
       </section>
     </main>
   );

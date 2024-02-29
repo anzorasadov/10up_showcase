@@ -22,13 +22,15 @@
 .my-3 { margin-top: 3rem; margin-bottom: 3rem; }
 
 .three-col {
+  --gap: 1rem;
   display: flex;
-  gap: 1rem;
+  gap: var(--gap);
   flex-direction: column;
 }
 
 .three-col > * {
   flex: 1 0 30%;
+  max-width: calc(33% - var(--gap)/2);
 }
 
 /* MD */
@@ -37,6 +39,6 @@
 }	
 /* LG */
 @media (min-width: 1024px) { 
-  .three-col { gap: 2rem; }
+  .three-col { --gap: 2rem; }
 }	
 	

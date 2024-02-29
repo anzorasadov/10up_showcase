@@ -55,6 +55,7 @@ a[target="new"] {
 a[target="new"]:after {
   content: url(/icons/open_in_new.svg);
   min-width: 1.5rem;
+  max-height: 1rem;
 }
 
 code.inline {
@@ -76,6 +77,14 @@ img {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
+}
+
+footer {
+  background-color: var(--color-sage-300);
+  padding: 2rem 0;
+  text-align: center;
+  color:white;
+  margin-top: 5rem;
 }
 
 /* SM */
