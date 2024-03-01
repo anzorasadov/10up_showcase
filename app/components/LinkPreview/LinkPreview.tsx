@@ -56,7 +56,10 @@ function LinkPreview({ url, target, contain }: LinkPreviewProps) {
             fill
             src={previewData.image}
             alt={`${previewData.title} preview`}
-            style={{ objectFit: contain ? "contain" : "cover" }}
+            style={{
+              objectFit: contain ? "contain" : "cover",
+              padding: contain ? "1rem" : "",
+            }}
           />
         )}
         {!previewData?.image && <Image fill src="/placeholder-image.jpg" alt={`${url} preview`} />}
